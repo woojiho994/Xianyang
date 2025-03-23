@@ -49,12 +49,6 @@ else:
             pyg_app = StreamlitRenderer(df)
             pyg_app.explorer()
             
-            # 添加导出说明
-            with st.expander("如何保存和分享您的图表"):
-                st.markdown("""
-                1. 点击图表右上角的导出按钮
-                2. 点击"复制代码"按钮
-                3. 保存该代码，下次使用时可以直接粘贴以恢复您的图表
-                """)
+
     else:
         st.info("请选择一个Excel文件以开始可视化") 
