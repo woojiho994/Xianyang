@@ -1,10 +1,13 @@
 import streamlit as st
 import pandas as pd
 import os
-from pygwalker.api.streamlit import StreamlitRenderer
+from pygwalker.api.streamlit import init_streamlit_comm, get_streamlit_html
 
 # 设置页面配置
 st.set_page_config(page_title="数据可视化平台", layout="wide")
+
+# 初始化pygwalker通信
+init_streamlit_comm()
 
 # 主页面
 st.title("数据可视化平台")
@@ -45,10 +48,16 @@ else:
             
         with tab2:
             st.subheader("数据可视化")
-            # 创建PyGWalker应用
-            pyg_app = StreamlitRenderer(df)
-            pyg_app.explorer()
+            # 使用HTML方式渲染PyGWalker
+            html = get_streamlit_html(df, spec="config.json" if os.path.exists("config.json") else None, use_kernel=False)
+            st.components.v1.html(html, height=800, scrolling=True)
             
-
+            # 添加导出说明
+            with st.expander("如何保存和分享您的图表"):
+                st.markdown("""
+                1. 点击图表右上角的导出按钮
+                2. 点击"复制代码"按钮
+                3. 保存该代码，下次使用时可以直接粘贴以恢复您的图表
+                """)
     else:
         st.info("请选择一个Excel文件以开始可视化") 
