@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import json
 from pygwalker.api.streamlit import init_streamlit_comm, get_streamlit_html
 
 # 设置页面配置
@@ -64,11 +65,50 @@ else:
             # 显示使用提示
             st.info("正在加载可视化界面，首次加载可能需要较长时间，请耐心等待...")
             
+            # 创建默认图表配置
+            default_spec = {
+                "dataSource": "browser",
+                "renderer": "canvas",
+                "charts": [{
+                    "gw_name": "chart_1", 
+                    "gw_pos": {"id": 1},
+                    "gw_props": {
+                        "chartType": "bar",
+                        "analyticsType": "aggregate",
+                        "fieldConfig": []
+                    }
+                }],
+                "layoutConfig": {
+                    "showDataSourceConfig": True,
+                    "showDisplayConfig": True,
+                    "showRendererConfig": True
+                },
+                "themeConfig": {
+                    "themeName": "light"
+                },
+                "explorerConfig": {
+                    "dataFrameName": "data",
+                    "hideDataSourceOnLoad": False
+                }
+            }
+            
+            # 检查是否有存储的配置
+            spec_path = "config.json"
+            if os.path.exists(spec_path):
+                try:
+                    with open(spec_path, 'r') as f:
+                        saved_spec = json.load(f)
+                    spec = saved_spec
+                except:
+                    spec = default_spec
+            else:
+                spec = default_spec
+            
             try:
                 # 使用HTML方式渲染PyGWalker，并明确指定配置
                 html = get_streamlit_html(
                     df, 
-                    spec="config.json" if os.path.exists("config.json") else None,
+                    spec=spec,
                     use_kernel=False,
                     dark="light",
                     interactive=True
