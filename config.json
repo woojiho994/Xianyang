@@ -1,0 +1,16 @@
+{
+  "dataSource": "browser", 
+  "renderer": "canvas",
+  "layoutConfig": {
+    "showDataSourceConfig": true,
+    "showDisplayConfig": true,
+    "showRendererConfig": true
+  },
+  "themeConfig": {
+    "themeName": "light"
+  },
+  "explorerConfig": {
+    "dataFrameName": "data",
+    "hideDataSourceOnLoad": false
+  }
+} 
