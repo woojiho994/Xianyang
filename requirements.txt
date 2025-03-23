@@ -1,4 +1,4 @@
-pygwalker==0.2.8
+pygwalker
 openpyxl
 xlrd
 ipywidgets>=8.0.0
