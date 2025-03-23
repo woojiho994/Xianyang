@@ -9,6 +9,18 @@ st.set_page_config(page_title="数据可视化平台", layout="wide")
 # 初始化pygwalker通信
 init_streamlit_comm()
 
+# 设置主题样式
+st.markdown("""
+<style>
+    .main {
+        background-color: #f5f7f9;
+    }
+    .stApp {
+        max-width: 100%;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # 主页面
 st.title("数据可视化平台")
 
@@ -48,9 +60,23 @@ else:
             
         with tab2:
             st.subheader("数据可视化")
-            # 使用HTML方式渲染PyGWalker
-            html = get_streamlit_html(df, spec="config.json" if os.path.exists("config.json") else None, use_kernel=False)
-            st.components.v1.html(html, height=800, scrolling=True)
+            
+            # 显示使用提示
+            st.info("正在加载可视化界面，首次加载可能需要较长时间，请耐心等待...")
+            
+            try:
+                # 使用HTML方式渲染PyGWalker，并明确指定配置
+                html = get_streamlit_html(
+                    df, 
+                    spec="config.json" if os.path.exists("config.json") else None,
+                    use_kernel=False,
+                    dark="light",
+                    interactive=True
+                )
+                st.components.v1.html(html, height=800, scrolling=True)
+            except Exception as e:
+                st.error(f"加载可视化界面时出错: {e}")
+                st.warning("如果遇到加载问题，请在终端运行: `pip install --upgrade ipywidgets pygwalker`")
             
             # 添加导出说明
             with st.expander("如何保存和分享您的图表"):
