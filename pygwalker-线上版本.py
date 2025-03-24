@@ -62,8 +62,6 @@ else:
         with tab2:
             st.subheader("数据可视化")
             
-            # 显示使用提示
-            st.info("正在加载可视化界面，首次加载可能需要较长时间，请耐心等待...")
             
             # 创建默认图表配置
             default_spec = {
